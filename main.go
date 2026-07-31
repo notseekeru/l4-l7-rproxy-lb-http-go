@@ -13,6 +13,8 @@ import (
 	"time"
 )
 
+var port = "8081"
+
 func main() {
 
 	cwd, err := os.Getwd()
@@ -20,10 +22,11 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	ln, err := net.Listen("tcp", ":8080")
+	ln, err := net.Listen("tcp", ":"+ port)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	log.Printf("Server is listening on port %s\n", port)
 
 	defer ln.Close()
 
@@ -33,6 +36,7 @@ func main() {
 			log.Print(err.Error())
 			break
 		}
+		log.Printf("Accepted connection from %s\n", conn.RemoteAddr().String())
 
 		go handleConnection(cwd, conn)
 
