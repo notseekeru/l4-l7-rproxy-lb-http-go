@@ -90,6 +90,14 @@ cd l7-http-engine
 
 ## Design Philosophy
 
+**Scope:** This applies to both projects in the monorepo — `l7-http-engine` and `l4-rproxy-lb` — unless noted otherwise.
+
+I wrote this code entirely myself without relying on AI for core logic or conventions. I used AI solely for syntax, boilerplate generation, as a code-review tool, and as a critique tool to better understand underlying systems and hand-picked advised implementation on engineering the systems. AI is also used to surface edge cases, memory-safety concerns, and robustness gaps — which I then investigate and fix myself rather than accepting AI-generated fixes wholesale.
+
+AI can also be unreliable at times — for example its understanding of path-traversal defenses isn't always trustworthy. To verify that surface, I wrote `l7-http-engine/path_traversal_test.sh`, which exercises traversal and injection attempts and confirms the server rejects them. It may be that I've missed something and it's still vulnerable, but for now that behavior is verified by the script.
+
+The systems might be flawed as they don't include extensive error handling and may contain logical bugs — these are learning projects, not production servers. Where AI was used to produce boilerplate reasoning for specific features, those notes live in the relevant project README.
+
 - **Standard library only.** Every byte crosses your own code before it hits the socket.
 - **Educational first.** Error handling is deliberately lean; this is a learning project, not a production server.
 - **Explicit over abstract.** Routing is a `switch`, headers are a `map`, responses are hand-assembled strings — you see the whole pipeline.
